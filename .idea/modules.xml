@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/trxsign.iml" filepath="$PROJECT_DIR$/.idea/trxsign.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/egldsign.iml" filepath="$PROJECT_DIR$/.idea/egldsign.iml" />
     </modules>
   </component>
 </project>

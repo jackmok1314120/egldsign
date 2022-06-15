@@ -176,4 +176,11 @@ type tomlConfig struct {
 		User     string `toml:"user"`
 		Password string `toml:"password"`
 	} `toml:"xtz"`
+	EgldCfg struct {
+		NodeUrl  string `toml:"nodeUrl"`
+		User     string `toml:"user"`
+		Password string `toml:"password"`
+		GasPrice int64  `toml:"gasPrice"`
+		GasLimit int64  `toml:"gasLimit"`
+	} `toml:"egld"`
 }

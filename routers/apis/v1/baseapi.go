@@ -104,6 +104,8 @@ func (ba *BaseApi) CreateAddress(c *gin.Context) {
 	)
 
 	//解析json数据
+	log.Info("req:", req)
+	fmt.Println("req1:", req)
 	if err = c.BindJSON(&req); err != nil {
 		respFailDataReturn(c, "Parse create address post data error")
 		return

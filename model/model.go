@@ -70,3 +70,17 @@ type ReqGetBalanceParams struct {
 type ReqValidAddressParams struct {
 	Address string `json:"address"`
 }
+
+//----------egldtransfer--------
+type EgldSignParams struct {
+	Version   uint32 `json:"version"`
+	ChainId   string `json:"chainId"`
+	Nonce     int64  `json:"nonce"`
+	Value     string `json:"value"`
+	Receiver  string `json:"receiver"`
+	Sender    string `json:"sender"`
+	GasPrice  int64  `json:"gasPrice"`
+	GasLimit  int64  `json:"gasLimit"`
+	Data      []byte `json:"data"`
+	Signature string `json:"signature"`
+}

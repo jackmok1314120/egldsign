@@ -1,13 +1,15 @@
-coinType = "trx"
+coinType = "egld"
 version = "v1"
-port = "8585"
+port = "8095"
 debug = true
 walletType = "hot"
 filePath = "./file"
 isStartThread = true
 mchId = "xtz"
 orderId = "202102041847"
-nodeUrl = "grpc.trongrid.io:50051"
+#nodeUrl = "grpc.trongrid.io:50051"
+#nodeUrl = "https://gateway.elrond.com"
+nodeUrl = "https://testnet-gateway.elrond.com"
 
 
 [auth]
@@ -17,14 +19,20 @@ user = "Y6ze"
 password = "Y6ze"
 
 
-[trx]
-nodeUrl = "http://3.225.171.164:50051"
-backUrls = [
-    "52.53.189.99:50051",
-    "18.196.99.16:50051",
-    "34.253.187.192:50051",
-    "18.133.82.227:50051",
-    "35.180.51.164:50051"
-]
+[egld]
+#nodeUrl = "http://3.225.171.164:50051"
+#nodeUrl = "https://gateway.elrond.com"
+nodeUrl = "https://testnet-gateway.elrond.com"
+#backUrls = [
+#    "52.53.189.99:50051",
+#    "18.196.99.16:50051",
+#    "34.253.187.192:50051",
+#    "18.133.82.227:50051",
+#    "35.180.51.164:50051"
+#]
 user = ""
 password = ""
+gasPrice = 1000000000
+gasLimit = 50000
+maxGasPriceGwei = 200
+minGasPriceGwei = 1

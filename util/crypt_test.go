@@ -21,3 +21,12 @@ func TestAesDecode(t *testing.T) {
 	t.Logf("解密结果：%s", string(text))
 	t.Logf("解密结果对比：%t", result == string(text))
 }
+func TestCreatAddr(t *testing.T) {
+	//res := new(model.ReqCreateAddressParamsV2)
+	//res.Count = 2
+	//res.CoinCode = "egld"
+	//res.Mch = "hoo"
+	//res.BatchNo = "egld_usb_20220601001"
+	//v1.EgldService.CreateAddressService()
+	//fmt.Println(v1.CreateAddressInfo())
+}

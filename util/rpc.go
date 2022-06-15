@@ -122,3 +122,7 @@ func (rpc *RpcClient) SendRequest(method string, params []interface{}) ([]byte, 
 		return data, nil
 	}
 }
+
+//func (rpc *RpcClient) GetEdlgBalance(address string) {
+//	url := fmt.Sprintf("%s/%s/%d", conf.Config.EgldCfg.NodeUrl, "address", address)
+//}
