@@ -10,7 +10,6 @@ import (
 	"github.com/ElrondNetwork/elrond-sdk-erdgo/builders"
 	"github.com/ElrondNetwork/elrond-sdk-erdgo/core"
 	"github.com/ElrondNetwork/elrond-sdk-erdgo/data"
-	"github.com/ElrondNetwork/elrond-sdk-erdgo/examples"
 	"github.com/ElrondNetwork/elrond-sdk-erdgo/interactors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/group-coldwallet/trxsign/conf"
@@ -154,17 +153,43 @@ func (cs *EgldService) TransferService(req interface{}) (interface{}, error) {
 	}
 
 	//var hexPrivateKey string
-
+	//地址校验
 	privateKeys, err := cs.BaseService.addressOrPublicKeyToPrivate(tp.Sender)
-	hexPrivateKey, err := hex.DecodeString(privateKeys)
-	fmt.Println("hexPrivateKey", hexPrivateKey)
+	//hexPrivateKey, err := hex.DecodeString(privateKeys)
+	//fmt.Println("hexPrivateKey", hexPrivateKey)
 	if err != nil {
 		return nil, fmt.Errorf("get private key error,Err=%v", err)
+		//地址不是由程序生成，没有对应私钥
 	}
-	tx, err := cs.Transfer(hexPrivateKey, tp.Receiver, tp.Value)
+
+	//余额️判断
+
+	addrBalance, err := egld.GetBalance(tp.Sender)
+	if err != nil {
+		return nil, fmt.Errorf("get Balance error%v", err)
+	}
+	toAmount, err := decimal.NewFromString(tp.Value)
+	if err != nil {
+		return nil, fmt.Errorf("parse amount error,err=%v", err)
+	}
+	BalanceAmount, err := decimal.NewFromString(addrBalance.Balance)
+	if err != nil {
+		return nil, fmt.Errorf("parse amount error,err=%v", err)
+	}
+	valueAmount := toAmount.BigInt()
+	fmt.Println("valueAmount", valueAmount)
+	balanceAmounts := BalanceAmount.BigInt()
+	log.Printf("出账金额为： %d,余额为： %d", valueAmount.Int64(), balanceAmounts.Int64())
+	if valueAmount.Int64() > balanceAmounts.Int64() {
+		return nil, fmt.Errorf("出账金额大于现有余额%v,出账金额%v,账户余额%v", err, valueAmount.Int64(), balanceAmounts.Int64())
+	}
+	hexPrivateKey, err := hex.DecodeString(privateKeys) //私钥进行decode传入符合签名格式
+	fmt.Println("hexPrivateKey", hexPrivateKey)
+	tx, err := cs.Transfer(hexPrivateKey, tp.Sender, tp.Receiver, tp.Value)
 	if err != nil {
 		log.Error("unable to get signature", "error", err)
 	}
+
 	return tx, err
 }
 
@@ -219,7 +244,7 @@ func (cs *EgldService) GetBalance(req *model.ReqGetBalanceParams) (interface{}, 
 	if err != nil {
 		log.Error("unable to compute balance", "error", err)
 	}
-	return Balance.Data.Account.Balance, err
+	return Balance.Balance, err
 }
 func (cs *EgldService) getSignaturetx(prikey []byte, req *model.EgldSignParams) (string, error) {
 	args := blockchain.ArgsElrondProxy{
@@ -243,16 +268,21 @@ func (cs *EgldService) getSignaturetx(prikey []byte, req *model.EgldSignParams) 
 	if err != nil {
 		log.Error("error creating transaction interactor", "error", err)
 	}
+	Balance, err := egld.GetBalance(req.Sender)
+	if err != nil {
+		log.Error("unable to compute balance", "error", err)
+	}
 	arg := data.ArgCreateTransaction{
-		Nonce:     1,
-		Value:     req.Value,
-		RcvAddr:   req.Receiver,
-		SndAddr:   req.Sender,
-		GasPrice:  uint64(req.GasPrice),
-		GasLimit:  uint64(req.GasLimit),
-		Signature: "",
-		ChainID:   req.ChainId,
-		Version:   req.Version,
+		Nonce:            1,
+		Value:            req.Value,
+		RcvAddr:          req.Receiver,
+		SndAddr:          req.Sender,
+		GasPrice:         uint64(req.GasPrice),
+		GasLimit:         uint64(req.GasLimit),
+		Signature:        "",
+		ChainID:          req.ChainId,
+		Version:          req.Version,
+		AvailableBalance: Balance.Balance,
 	}
 
 	tx, err := ti.ApplySignatureAndGenerateTx([]byte(prikey), arg)
@@ -265,6 +295,7 @@ func (cs *EgldService) getSignaturetx(prikey []byte, req *model.EgldSignParams) 
 	//	log.Error("error sending transaction", "error", err)
 	//}
 	//return hashes, err
+
 	return tx.Signature, err
 }
 
@@ -284,10 +315,10 @@ func (cs *EgldService) getSignature(prikey []byte, req *model.EgldSignParams) (*
 	sign, err := egld.SignTransaction(tx, prikey)
 	return sign, err
 }
-func (cs *EgldService) Transfer(privateKey []byte, rev, value string) ([]string, error) {
+func (cs *EgldService) Transfer(privateKey []byte, sendaddr, receaddr, value string) (string, error) {
 
 	args := blockchain.ArgsElrondProxy{
-		ProxyURL:            examples.TestnetGateway,
+		ProxyURL:            conf.Config.NodeUrl,
 		Client:              nil,
 		SameScState:         false,
 		ShouldBeSynced:      false,
@@ -309,8 +340,16 @@ func (cs *EgldService) Transfer(privateKey []byte, rev, value string) ([]string,
 		log.Error("unable to load alice.pem", "error", err)
 	}
 	// Generate address from private key
+	//传入私钥反推发送地址
 	address, err := w.GetAddressFromPrivateKey(privateKey)
+	//地址判断
+	send := address.AddressAsBech32String() //[]byte转为string
+
 	fmt.Println("address", address.AddressAsBech32String())
+	if sendaddr != send {
+		return "传入地址与私钥产生的出账地址不一致", err
+	}
+
 	if err != nil {
 		log.Error("unable to load the address from the private key", "error", err)
 	}
@@ -326,9 +365,10 @@ func (cs *EgldService) Transfer(privateKey []byte, rev, value string) ([]string,
 		log.Error("unable to prepare the transaction creation arguments", "error", err)
 	}
 
-	transactionArguments.RcvAddr = rev // send to self
+	transactionArguments.RcvAddr = receaddr
 	fmt.Println("addr", transactionArguments.RcvAddr)
 	transactionArguments.Value = value // 1EGLD
+	log.Printf("出账金额为： %v,手续费为： %d,nance:%d", transactionArguments.Value, transactionArguments.GasLimit, transactionArguments.Nonce)
 
 	txBuilder, err := builders.NewTxBuilder(blockchain.NewTxSigner())
 	if err != nil {
@@ -351,5 +391,73 @@ func (cs *EgldService) Transfer(privateKey []byte, rev, value string) ([]string,
 		log.Error("error sending transaction", "error", err)
 	}
 	log.Info("transactions sent", "hashes", hashes)
-	return hashes, nil
+	//因为只有一笔交易，转换为string，格式不要传数组[]string
+	hash := hashes[0]
+	return hash, nil
+}
+
+type Rsponse struct {
+	Data struct {
+		HyperBlock Hyperblock `json:"hyperblock"`
+	}
+	Error string `json:"error"`
+	Code  string `json:"code"`
+}
+type Hyperblock struct {
+	Nonce         int64  `json:"nonce"`
+	Round         int    `json:"round"`
+	Hash          string `json:"hash"`
+	PrevBlockHash string `json:"prevBlockHash"`
+	Epoch         int    `json:"epoch"`
+	NumTxs        int    `json:"numTxs"`
+	ShardBlocks   []struct {
+		Hash  string `json:"hash"`
+		Nonce int    `json:"nonce"`
+		Round int    `json:"round"`
+		Shard int    `json:"shard"`
+	} `json:"shardBlocks"`
+	Transactions           []*Transactions `json:"transactions"`
+	Timestamp              int             `json:"timestamp"`
+	AccumulatedFees        string          `json:"accumulatedFees"`
+	DeveloperFees          string          `json:"developerFees"`
+	AccumulatedFeesInEpoch string          `json:"accumulatedFeesInEpoch"`
+	DeveloperFeesInEpoch   string          `json:"developerFeesInEpoch"`
+	Status                 string          `json:"status"`
+}
+type Transactions struct {
+	Type             string `json:"type"`
+	Hash             string `json:"hash"`
+	Nonce            int    `json:"nonce"`
+	Value            string `json:"value"`
+	Receiver         string `json:"receiver"`
+	Sender           string `json:"sender"`
+	GasPrice         string `json:"gasPrice"`
+	GasLimit         int    `json:"gasLimit"`
+	Signature        string `json:"signature"`
+	SourceShard      int    `json:"sourceShard"`
+	DestinationShard int    `json:"destinationShard"`
+	MiniblockType    string `json:"miniblockType"`
+	MiniblockHash    string `json:"miniblockHash"`
+	Status           string `json:"status"`
+}
+
+func GetBlocks(method string, nonce int64) (*Hyperblock, error) {
+
+	url := fmt.Sprintf("%s/%s/%d", conf.Config.NodeUrl, method, nonce)
+	fmt.Println("Node:", conf.Config.NodeUrl)
+	fmt.Println("url", url)
+	log.Infof("url:%+v", url)
+	rep, err := egld.Get(url)
+	//fmt.Println("rep", string(rep))
+	//log.Infof("rep:", string(rep))
+
+	b := Rsponse{}
+	err = json.Unmarshal(rep, &b)
+	//fmt.Println("Balance", b)
+	log.Infof("HyperBlock:%+v", b)
+	if err != nil {
+
+		fmt.Println("Umarshal failed:", err)
+	}
+	return &b.Data.HyperBlock, err
 }

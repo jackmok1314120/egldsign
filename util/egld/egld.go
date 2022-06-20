@@ -53,24 +53,25 @@ func (ep *ElrondProxy) Getblock(nonce int64) (block *HyperBlock, err error) {
 
 type EgldBalance struct {
 	Data struct {
-		Account struct {
-			Address         string      `json:"address"`
-			Nonce           int         `json:"nonce"`
-			Balance         string      `json:"balance"`
-			Username        string      `json:"username"`
-			Code            string      `json:"code"`
-			CodeHash        interface{} `json:"codeHash"`
-			RootHash        interface{} `json:"rootHash"`
-			CodeMetadata    interface{} `json:"codeMetadata"`
-			DeveloperReward string      `json:"developerReward"`
-			OwnerAddress    string      `json:"ownerAddress"`
-		} `json:"account"`
+		Account *Accounts `json:"account"`
 	} `json:"data"`
 	Error string `json:"error"`
 	Code  string `json:"code"`
 }
+type Accounts struct {
+	Address         string      `json:"address"`
+	Nonce           int         `json:"nonce"`
+	Balance         string      `json:"balance"`
+	Username        string      `json:"username"`
+	Code            string      `json:"code"`
+	CodeHash        interface{} `json:"codeHash"`
+	RootHash        interface{} `json:"rootHash"`
+	CodeMetadata    interface{} `json:"codeMetadata"`
+	DeveloperReward string      `json:"developerReward"`
+	OwnerAddress    string      `json:"ownerAddress"`
+}
 
-func GetBalance(address string) (Balance *EgldBalance, err error) {
+func GetBalance(address string) (Balance *Accounts, err error) {
 
 	url := fmt.Sprintf("%s/%s/%s", conf.Config.NodeUrl, "address", address)
 	//fmt.Println("Node:", conf.Config.NodeUrl)
@@ -89,7 +90,7 @@ func GetBalance(address string) (Balance *EgldBalance, err error) {
 		return
 	}
 
-	return &b, err
+	return b.Data.Account, err
 }
 func Get(url string) ([]byte, error) {
 	// 超时时间：60秒
@@ -106,9 +107,10 @@ func Get(url string) ([]byte, error) {
 	result, _ := ioutil.ReadAll(resp.Body)
 	return result, nil
 }
-func Post(url string) {
 
-}
+//func Post(url string) {
+//
+//}
 func SignTransaction(tx *data.Transaction, privateKey []byte) (*data.Transaction, error) {
 	tx.Signature = ""
 	txSingleSigner := &singlesig.Ed25519Signer{}

@@ -5,17 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3431af1c-ff61-4d86-9144-c1fbeefe9229" name="Default Changelist" comment="Default Changelist">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/trxsign.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/conf/conf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/config.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/apis/v1/baseapi.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/apis/v1/baseapi.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/crypt_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/crypt_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/rpc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/v1/aglds_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/v1/aglds_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/v1/egld.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/v1/egld.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/egld/egld.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/egld/egld.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/egld_test.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +25,11 @@
   </component>
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GoLibraries">
@@ -68,7 +67,7 @@
       <recent name="$PROJECT_DIR$/util" />
     </key>
   </component>
-  <component name="RunManager" selected="Go 测试.github.com/group-coldwallet/trxsign/services/v1 中的 TestTransfer">
+  <component name="RunManager" selected="Go 构建.go build main.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="egldsign" />
       <working_directory value="$PROJECT_DIR$" />
@@ -97,7 +96,7 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
-    <configuration name="github.com/group-coldwallet/trxsign/services/v1 中的 TestTransfer" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="github.com/group-coldwallet/trxsign/services/v1 中的 TestGetBalance" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="egldsign" />
       <working_directory value="$PROJECT_DIR$/services/v1" />
       <root_directory value="$PROJECT_DIR$" />
@@ -106,10 +105,34 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestTransfer\E$" />
+      <pattern value="^\QTestGetBalance\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="github.com/group-coldwallet/trxsign/util 中的 TestTransfer" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="github.com/group-coldwallet/trxsign/services/v1 中的 TestGetData" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="egldsign" />
+      <working_directory value="$PROJECT_DIR$/services/v1" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/group-coldwallet/trxsign/services/v1" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestGetData\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/group-coldwallet/trxsign/services/v1 中的 TestGetdata" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="egldsign" />
+      <working_directory value="$PROJECT_DIR$/services/v1" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/group-coldwallet/trxsign/services/v1" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestGetdata\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/group-coldwallet/trxsign/util 中的 TestGetresp" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="egldsign" />
       <working_directory value="$PROJECT_DIR$/util" />
       <root_directory value="$PROJECT_DIR$" />
@@ -118,40 +141,16 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestTransfer\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="github.com/group-coldwallet/trxsign/util/egld 中的 TestSign" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="egldsign" />
-      <working_directory value="$PROJECT_DIR$/util/egld" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/group-coldwallet/trxsign/util/egld" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestSign\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="github.com/group-coldwallet/trxsign/util/egld 中的 TestTransfer" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="egldsign" />
-      <working_directory value="$PROJECT_DIR$/util/egld" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/group-coldwallet/trxsign/util/egld" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestTransfer\E$" />
+      <pattern value="^\QTestGetresp\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go 构建.go build main.go" />
-        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/services/v1 中的 TestTransfer" />
-        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/util 中的 TestTransfer" />
-        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/util/egld 中的 TestTransfer" />
-        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/util/egld 中的 TestSign" />
+        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/services/v1 中的 TestGetBalance" />
+        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/services/v1 中的 TestGetData" />
+        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/services/v1 中的 TestGetdata" />
+        <item itemvalue="Go 测试.github.com/group-coldwallet/trxsign/util 中的 TestGetresp" />
       </list>
     </recent_temporary>
   </component>
@@ -183,12 +182,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/util/egld/egld.go</url>
-          <line>83</line>
+          <line>84</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/util/egld/egld.go</url>
-          <line>82</line>
+          <line>83</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -248,12 +247,52 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/util/egld/egld.go</url>
-          <line>72</line>
+          <line>73</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/util/egld/egldrpc_test.go</url>
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/egld.go</url>
+          <line>382</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/egld.go</url>
+          <line>386</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/egld.go</url>
+          <line>388</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/aglds_test.go</url>
+          <line>44</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/egld.go</url>
+          <line>445</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/egld.go</url>
+          <line>449</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/egld.go</url>
+          <line>453</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/services/v1/aglds_test.go</url>
+          <line>41</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
