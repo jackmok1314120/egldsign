@@ -21,4 +21,4 @@
 ## 启动程序
     修改./conf/config.toml下的cointype为对应的币种
     配置./conf/config.toml下的walletType为hot or cold
-    
+    # egldsign
